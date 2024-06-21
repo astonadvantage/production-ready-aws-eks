@@ -13,11 +13,11 @@ terraform {
   # Edit the 'bucket', 'region', and 'dynamodb_table' fields to match the state management resources
   # you created.
   backend "s3" {
-    bucket         = "090511222473-terraform-tfstate-fswl"
-    key            = "fswl/terraform.tfstate"
-    region         = "us-east-2"
+    bucket         = "292628133012-terraform-tfstate-hedingham-clstr"
+    key            = "hedingham-clstr/terraform.tfstate"
+    region         = "eu-west-1"
     dynamodb_table = "terraform-state-lock-fswl"
-    profile        = "lawrence"
+    profile        = "default"
     encrypt        = false
   }
 
@@ -32,7 +32,7 @@ terraform {
     }
     helm = {
       source  = "hashicorp/helm"
-      version = "~> 2.10"
+      version = "~> 2.12.1"
     }
     kubernetes = {
       source  = "hashicorp/kubernetes"
