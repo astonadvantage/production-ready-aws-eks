@@ -101,26 +101,40 @@ module "eks" {
       ipv6_cidr_blocks = ["::/0"]
     }
   }
-
-  eks_managed_node_groups = var.managed_node_groups
-
-  # eks_managed_node_groups = {
-  #   eks = {
-  #     name              = "${var.shared_resource_name}-worker-nodes"
-  #     capacity_type     = var.capacity_type
-  #     enable_monitoring = false
-  #     desired_size      = var.desired_worker_node
-  #     max_size          = var.max_worker_node
-  #     min_size          = var.min_worker_node
-  #     disk_size         = var.disk_size
-  #     instance_types    = var.instance_types
-
-  #     labels = {
-  #       node-group = var.namespace
-  #     }
-
-  #   }
-  # }
+  # TODO: make the settings configurable - maybe use a map based on key name
+  eks_managed_node_groups = {
+    # single az nodes so that we can ensure that the node and EBS are in same AZ - needed for DB pods
+    single_az = {
+      name              = "${var.shared_resource_name}-single-az"
+      # valid choices: 'SPOT', 'ON_DEMAND', 'RESERVED'
+      capacity_type     = "SPOT"
+      enable_monitoring = false
+      desired_size      = 1
+      max_size          = 5
+      min_size          = 1
+      disk_size         = 50
+      instance_types    = ["t3.xlarge", "t3a.xlarge", "t2.xlarge"]
+      subnet_ids        = [module.vpc.private_subnets[0]] #var.private_subnets[0]
+      taints            = {
+        single_az_workload = {
+          key    = "single_az_workload"
+          value  = "true"
+          effect = "NO_SCHEDULE"
+        }
+      }
+    }
+    multi_az = {
+      name              = "${var.shared_resource_name}-multi-az"
+      capacity_type     = "SPOT"
+      enable_monitoring = false
+      desired_size      = 2
+      max_size          = 5
+      min_size          = 2
+      disk_size         = 50
+      instance_types    = ["t3.large", "t3a.large", "t2.large"]
+    }
+    # on_demand = {} for example we may want some on demand/reserved nodes
+  }
 
   iam_role_additional_policies = {
     WorkersAdditionalPolicies = aws_iam_policy.worker_policy.arn

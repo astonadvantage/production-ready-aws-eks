@@ -108,18 +108,6 @@ variable "cluster_version" {
 #   type        = string
 # }
 
-variable "managed_node_groups" {
-  type = any
-  default = {
-    green = {
-      use_name_prefix = false
-      min_size = 3
-      max_size = 10
-      desired_size = 3
-    }
-  }
-}
-
 variable "aws_auth_users" {
   description = "Additional IAM users to add to the aws-auth configmap in order to provide admin access to Kubernetes resources. If unset then only the Kubernetes cluster creator will have access to the cluster."
   type = list(object({
