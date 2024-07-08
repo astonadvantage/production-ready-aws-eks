@@ -25,11 +25,6 @@
 locals {
 }
 
-data "template_file" "vertical-pod-autoscaler-values" {
-  template = file("${path.module}/yml/vertical-pod-autoscaler-values.yaml")
-  vars     = {}
-}
-
 resource "helm_release" "vpa" {
   namespace        = "vpa"
   create_namespace = true
@@ -40,7 +35,7 @@ resource "helm_release" "vpa" {
   version    = "~> 6.0"
 
   values = [
-    data.template_file.vertical-pod-autoscaler-values.rendered
+    templatefile("${path.module}/yml/vertical-pod-autoscaler-values.yaml", {})
   ]
-
 }
+

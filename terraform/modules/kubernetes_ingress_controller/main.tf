@@ -20,10 +20,7 @@
 #   helm show values ingress-nginx/ingress-nginx
 #------------------------------------------------------------------------------
 locals {
-}
-
-data "template_file" "nginx-values" {
-  template = file("${path.module}/yml/nginx-values.yaml")
+  nginx_values = templatefile("${path.module}/yml/nginx-values.yaml", {})
 }
 
 resource "helm_release" "ingress_nginx_controller" {
@@ -36,7 +33,7 @@ resource "helm_release" "ingress_nginx_controller" {
   version    = "~> 4.4"
 
   values = [
-    data.template_file.nginx-values.rendered
+    local.nginx_values
   ]
 
   set {

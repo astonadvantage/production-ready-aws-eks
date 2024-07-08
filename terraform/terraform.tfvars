@@ -12,7 +12,7 @@ domain      = "hedingham.co"
 ###############################################################################
 # Optional inputs
 ###############################################################################
-shared_resource_name = "hedingham-clstr"
+shared_resource_name = "hedclstr"
 aws_auth_users = [
   {
     userarn  = "arn:aws:sts::292628133012:assumed-role/AWSReservedSSO_AdministratorAccess_a6414d82df0d5ab2/Mitch"
@@ -27,7 +27,7 @@ kms_key_owners = [
 tags = {
   Terraform   = "true"
   Platform    = "Kube cluster"
-  Environment = "hedingham-clstr"
+  Environment = "hedclstr"
 }
 
 # AWS EKS Kubernetes

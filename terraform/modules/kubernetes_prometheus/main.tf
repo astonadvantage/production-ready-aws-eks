@@ -38,11 +38,6 @@ locals {
   prometheus = "prometheus"
 }
 
-data "template_file" "prometheus-values" {
-  template = file("${path.module}/yml/prometheus-values.yaml")
-  vars     = {}
-}
-
 resource "helm_release" "prometheus" {
   namespace        = local.prometheus
   create_namespace = true
@@ -53,7 +48,7 @@ resource "helm_release" "prometheus" {
   version    = "39.6.0"
 
   values = [
-    data.template_file.prometheus-values.rendered
+    templatefile("${path.module}/yml/prometheus-values.yaml", {})
   ]
 
   # changes the password (stored in k8s secret prometheus-grafana) from 'prom-operator'
@@ -62,7 +57,6 @@ resource "helm_release" "prometheus" {
     name  = "grafana.adminPassword"
     value = random_password.grafana.result
   }
-
 }
 
 #------------------------------------------------------------------------------

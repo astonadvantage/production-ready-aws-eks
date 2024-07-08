@@ -33,20 +33,16 @@ resource "helm_release" "cert-manager" {
   repository = "jetstack"
   version    = "~> 1.12"
   values = [
-    data.template_file.cert-manager-values.rendered
+    templatefile("${path.module}/manifests/cert-manager-values.yaml.tpl", {
+      role_arn  = module.cert_manager_irsa.iam_role_arn
+      namespace = local.cert_manager_namespace
+    })
   ]
 }
 
 #------------------------------------------------------------------------------
 #                               SUPPORTING RESOURCES
 #------------------------------------------------------------------------------
-data "template_file" "cert-manager-values" {
-  template = file("${path.module}/manifests/cert-manager-values.yaml.tpl")
-  vars = {
-    role_arn  = module.cert_manager_irsa.iam_role_arn
-    namespace = local.cert_manager_namespace
-  }
-}
 
 resource "aws_iam_policy" "cert_manager_policy" {
   name        = "${var.namespace}-cert-manager-policy"

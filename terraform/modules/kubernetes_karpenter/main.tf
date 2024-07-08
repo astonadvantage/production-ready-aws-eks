@@ -33,15 +33,6 @@ locals {
   )
 }
 
-data "template_file" "karpenter-values" {
-  template = file("${path.module}/yml/karpenter-values.yaml.tpl")
-
-  vars = {
-    shared_resource_name  = var.shared_resource_name
-  }
-
-}
-
 
 resource "helm_release" "karpenter" {
   namespace        = local.karpenter_namespace
@@ -53,7 +44,9 @@ resource "helm_release" "karpenter" {
   version    = "~> 0.16"
 
   values = [
-    data.template_file.karpenter-values.rendered
+    templatefile("${path.module}/yml/karpenter-values.yaml.tpl", {
+      shared_resource_name = var.shared_resource_name
+    })
   ]
 
   set {

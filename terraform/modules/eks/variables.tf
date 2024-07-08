@@ -28,34 +28,45 @@ variable "cluster_version" {
   type    = string
 }
 
-variable "disk_size" {
-  default = "30"
-  type    = number
-}
+# variable "disk_size" {
+#   default = "30"
+#   type    = number
+# }
 
-variable "instance_types" {
-  type    = list(string)
-  default = ["c5.2xlarge"]
-}
+# variable "instance_types" {
+#   type    = list(string)
+#   default = ["c5.2xlarge"]
+# }
 
-variable "desired_worker_node" {
-  default = "2"
-  type    = number
-}
+# variable "desired_worker_node" {
+#   default = "2"
+#   type    = number
+# }
 
-variable "min_worker_node" {
-  default = "2"
-  type    = number
-}
+# variable "min_worker_node" {
+#   default = "2"
+#   type    = number
+# }
 
-variable "max_worker_node" {
-  default = "10"
-  type    = number
-}
+# variable "max_worker_node" {
+#   default = "10"
+#   type    = number
+# }
 
-variable "capacity_type" {
-  default = "ON_DEMAND"
-  type    = string
+# variable "capacity_type" {
+#   default = "ON_DEMAND"
+#   type    = string
+# }
+variable "managed_node_groups" {
+  type = any
+  default = {
+    green = {
+      use_name_prefix = false
+      min_size        = 3
+      max_size        = 10
+      desired_size    = 3
+    }
+  }
 }
 
 variable "aws_auth_users" {

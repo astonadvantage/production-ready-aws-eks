@@ -72,40 +72,52 @@ variable "cluster_version" {
   type        = string
 }
 
-variable "disk_size" {
-  description = "The number of gigabytes of storages to allocate to each Linux server node supporting your Kubernetes cluster"
-  default     = "30"
-  type        = number
-}
+# variable "disk_size" {
+#   description = "The number of gigabytes of storages to allocate to each Linux server node supporting your Kubernetes cluster"
+#   default     = "30"
+#   type        = number
+# }
 
-variable "instance_types" {
-  description = "the range of AWS EC2 instance types that Kubernetes will attempt to acquire from the AWS EC2 spot market"
-  type        = list(string)
-  default     = ["t3.2xlarge", "t3a.2xlarge", "t2.2xlarge"]
-}
+# variable "instance_types" {
+#   description = "the range of AWS EC2 instance types that Kubernetes will attempt to acquire from the AWS EC2 spot market"
+#   type        = list(string)
+#   default     = ["t3.2xlarge", "t3a.2xlarge", "t2.2xlarge"]
+# }
 
-variable "desired_worker_node" {
-  description = "The number of AWS EC2 Linux worker instances to create and assigned to your Kubernetes cluster"
-  default     = "2"
-  type        = number
-}
+# variable "desired_worker_node" {
+#   description = "The number of AWS EC2 Linux worker instances to create and assigned to your Kubernetes cluster"
+#   default     = "2"
+#   type        = number
+# }
 
-variable "min_worker_node" {
-  description = "The minimum permitted number of AWS EC2 Linux worker instances to be assigned to your Kubernetes cluster"
-  default     = "2"
-  type        = number
-}
+# variable "min_worker_node" {
+#   description = "The minimum permitted number of AWS EC2 Linux worker instances to be assigned to your Kubernetes cluster"
+#   default     = "2"
+#   type        = number
+# }
 
-variable "max_worker_node" {
-  description = "The maximum permitted number of AWS EC2 Linux worker instances to be assigned to your Kubernetes cluster when scaling"
-  default     = "10"
-  type        = number
-}
+# variable "max_worker_node" {
+#   description = "The maximum permitted number of AWS EC2 Linux worker instances to be assigned to your Kubernetes cluster when scaling"
+#   default     = "10"
+#   type        = number
+# }
 
-variable "capacity_type" {
-  description = "Pricing scheme to be used by AWS EC2 when acquiring Linux server instances for your cluster. Valid options are: ON_DEMAND, SPOT, RESERVED"
-  default     = "SPOT"
-  type        = string
+# variable "capacity_type" {
+#   description = "Pricing scheme to be used by AWS EC2 when acquiring Linux server instances for your cluster. Valid options are: ON_DEMAND, SPOT, RESERVED"
+#   default     = "SPOT"
+#   type        = string
+# }
+
+variable "managed_node_groups" {
+  type = any
+  default = {
+    green = {
+      use_name_prefix = false
+      min_size = 3
+      max_size = 10
+      desired_size = 3
+    }
+  }
 }
 
 variable "aws_auth_users" {

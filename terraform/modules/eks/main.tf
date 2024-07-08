@@ -102,23 +102,25 @@ module "eks" {
     }
   }
 
-  eks_managed_node_groups = {
-    eks = {
-      name              = "${var.shared_resource_name}-worker-nodes"
-      capacity_type     = var.capacity_type
-      enable_monitoring = false
-      desired_size      = var.desired_worker_node
-      max_size          = var.max_worker_node
-      min_size          = var.min_worker_node
-      disk_size         = var.disk_size
-      instance_types    = var.instance_types
+  eks_managed_node_groups = var.managed_node_groups
 
-      labels = {
-        node-group = var.namespace
-      }
+  # eks_managed_node_groups = {
+  #   eks = {
+  #     name              = "${var.shared_resource_name}-worker-nodes"
+  #     capacity_type     = var.capacity_type
+  #     enable_monitoring = false
+  #     desired_size      = var.desired_worker_node
+  #     max_size          = var.max_worker_node
+  #     min_size          = var.min_worker_node
+  #     disk_size         = var.disk_size
+  #     instance_types    = var.instance_types
 
-    }
-  }
+  #     labels = {
+  #       node-group = var.namespace
+  #     }
+
+  #   }
+  # }
 
   iam_role_additional_policies = {
     WorkersAdditionalPolicies = aws_iam_policy.worker_policy.arn
